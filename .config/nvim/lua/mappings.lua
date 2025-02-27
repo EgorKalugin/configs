@@ -46,6 +46,10 @@ vim.keymap.set("n", "<leader>fr", "<cmd>Telescope resume<CR>", { desc = "Resume 
 vim.keymap.set('n', '<leader>fd', ':Telescope diagnostics bufnr=0<CR>', { noremap = true, silent = true, desc = "Find Diagnostics" })
 vim.keymap.set('n', '<leader>gh', ':Telescope git_bcommits<CR>', { noremap = true, silent = true, desc = "Git file history" })
 
+-- Quickfix
+vim.keymap.set('n', '<M-j>', '<CMD>cnext<CR>', { noremap = true, silent = true, desc = "Quickfix list go next" })
+vim.keymap.set('n', '<M-k>', '<CMD>cprev<CR>', { noremap = true, silent = true, desc = "Quickfix list go prev" })
+
 --Gigsigns
 vim.keymap.set("n", "<leader>gp", "<cmd>lua require'gitsigns'.preview_hunk()<CR>", { desc = "Preview Git Hunk" })
 vim.keymap.set("n", "<leader>gt", "<cmd>lua require'gitsigns'.toggle_current_line_blame()<CR>", { desc = "Toggle Current Line Blame" })
