@@ -97,6 +97,7 @@ plugins=(
   web-search
   kubectl
   rust
+  vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
