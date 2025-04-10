@@ -19,6 +19,7 @@ return {
           "%.onnx", -- Analytics shit
           "%.cbm", -- Analytics shit
           "%.pdf", -- Analytics shit
+          "%.ipynb", -- Analytics shit
           ".ruff_cache", -- Ruff cache
         },
       },
