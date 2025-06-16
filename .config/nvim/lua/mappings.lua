@@ -75,4 +75,5 @@ vim.keymap.set("n", "<C-l>", function() harpoon:list():select(4) end)
 -- Harpoon (End)local harpoon = require("harpoon")
 
 -- LSP
-vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename Symbol" })
+vim.keymap.set("n", "<leader>ra", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename Symbol", noremap=true })
+vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Go to References", noremap=true })

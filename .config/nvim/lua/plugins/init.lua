@@ -18,7 +18,7 @@ return {
   -- rustaceanvim
   {
     "mrcjkb/rustaceanvim",
-    version = "^5", -- Recommended
+    version = "^6", -- Recommended
     lazy = false, -- This plugin is already lazy
     ft = "rust",
 
@@ -61,6 +61,7 @@ return {
       dap.listeners.before.launch.dapui_config = function()
         dapui.open()
       end
+      vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
       -- dap.listeners.before.event_terminated.dapui_config = function()
       --   dapui.close()
       -- end

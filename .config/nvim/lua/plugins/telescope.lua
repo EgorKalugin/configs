@@ -20,6 +20,8 @@ return {
           "%.cbm", -- Analytics shit
           "%.pdf", -- Analytics shit
           "%.ipynb", -- Analytics shit
+          "%.xml", -- Analytics shit
+          "%.html", -- Analytics shit
           ".ruff_cache", -- Ruff cache
         },
       },
