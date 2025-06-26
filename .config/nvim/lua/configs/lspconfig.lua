@@ -2,6 +2,7 @@
 require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require "lspconfig"
+local util = require "lspconfig.util"
 
 -- EXAMPLE
 local servers = { "html", "cssls" }
@@ -21,33 +22,56 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+-- Unified Python project root detection
+local python_root = util.root_pattern("pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "ruff.toml", ".ruff.toml", ".git")
+
+local function custom_on_attach(client, bufnr)
+  nvlsp.on_attach(client, bufnr)
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  -- Disable formatting in pyright if using ruff for formatting
+  if client.name == "pyright" then
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  end
+end
+
 -- python
 lspconfig.pyright.setup {
-  on_attach = nvlsp.on_attach,
+  on_attach = custom_on_attach,
   on_init = nvlsp.on_init,
-  capabilities = nvlsp.capabilities,
+  capabilities = vim.tbl_deep_extend("force", nvlsp.capabilities, {
+    offsetEncoding = { "utf-16" },
+    general = { positionEncodings = { "utf-16" } },
+  }),
   settings = {
     python = {
       analysis = {
-        typeCheckingMode = "standart", -- Optional: Enable strict type checking
+        typeCheckingMode = "strict",
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
+        diagnosticMode = "workspace",
       },
     },
   },
   filetypes = { "python" },
+  root_dir = python_root,
 }
 lspconfig.ruff.setup {
-  on_attach = nvlsp.on_attach,
+  on_attach = custom_on_attach,
   on_init = nvlsp.on_init,
-  capabilities = nvlsp.capabilities,
+  capabilities = vim.tbl_deep_extend("force", nvlsp.capabilities, {
+    general = {
+      positionEncodings = { "utf-16", "utf-8" },
+    },
+  }),
   settings = {
     ruff = {
-      organizeImports = true, -- Enable Ruff's import organization
-      fixAll = true, -- Enable auto-fix on save
+      organizeImports = true,
+      fixAll = true,
     },
   },
-  filetypes = { "python" }, -- Ensure Ruff runs only for Python files
+  filetypes = { "python" },
+  root_dir = python_root,
 }
 -- for using ruff with pyright
 vim.api.nvim_create_autocmd("LspAttach", {
