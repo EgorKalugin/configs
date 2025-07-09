@@ -134,11 +134,15 @@ export LANG=en_US.UTF-8
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ls="eza --tree --level=1 --icons=always --no-time --no-user --no-permissions --hyperlink"
+alias cat="bat"
 alias tarpaulin-html="cargo tarpaulin --all-features -o Html"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-alias n="nvim ."
+alias n="nvim"
 
 eval $(thefuck --alias)
+eval "$(zoxide init zsh)"
+
+macchina --theme cat
