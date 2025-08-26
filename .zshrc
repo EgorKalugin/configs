@@ -133,7 +133,7 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ls="eza --tree --level=1 --icons=always --no-time --no-user --no-permissions --hyperlink -a"
+alias ls="eza --long --tree --level=1 --icons=always --no-user --no-permissions --hyperlink -a"
 alias l="ls"
 alias cat="bat"
 alias tarpaulin-html="cargo tarpaulin --all-features -o Html"
