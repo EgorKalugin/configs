@@ -76,9 +76,7 @@ lspconfig.ruff.setup {
   on_attach = custom_on_attach,
   on_init = nvlsp.on_init,
   capabilities = vim.tbl_deep_extend("force", nvlsp.capabilities, {
-    general = {
-      positionEncodings = { "utf-16", "utf-8" },
-    },
+    general = { positionEncodings = { "utf-16" } },
   }),
   settings = {
     ruff = {
