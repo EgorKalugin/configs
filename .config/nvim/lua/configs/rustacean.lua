@@ -156,6 +156,7 @@ vim.g.rustaceanvim = {
   },
   server = {
     on_attach = nvlsp.on_attach,
+    standalone = true,
     settings = {
       ["rust-analyzer"] = rust_analyzer_config,
     },
