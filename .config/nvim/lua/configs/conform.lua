@@ -4,6 +4,9 @@ local options = {
     -- css = { "prettier" },
     -- html = { "prettier" },
     python = { "ruff_format", "isort", "ruff" },
+    -- Prefer prettier for JSON; jq second (strict JSON only)
+    json = { "prettier", "jq" },
+    jsonc = { "prettier" },
   },
 
   format_on_save = nil,

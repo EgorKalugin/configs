@@ -17,6 +17,12 @@ return {
     },
   },
 
+  -- JSON schema catalog for jsonls
+  {
+    "b0o/schemastore.nvim",
+    event = "BufReadPre",
+  },
+
   -- rustaceanvim
   {
     "mrcjkb/rustaceanvim",

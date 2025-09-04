@@ -13,6 +13,22 @@ if vim.lsp.inlay_hint then
   vim.lsp.inlay_hint.enable(true, { 0 })
 end
 
+-- json
+do
+  local has_schemastore, schemastore = pcall(require, "schemastore")
+  lspconfig.jsonls.setup {
+    on_attach = nvlsp.on_attach,
+    on_init = nvlsp.on_init,
+    capabilities = nvlsp.capabilities,
+    settings = {
+      json = {
+        schemas = has_schemastore and schemastore.json.schemas() or nil,
+        validate = { enable = true },
+      },
+    },
+  }
+end
+
 -- lsps with default config
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {

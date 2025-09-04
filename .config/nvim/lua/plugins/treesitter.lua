@@ -19,6 +19,8 @@ return {
         "html",
         "css",
         "lua",
+        "json",
+        "jsonc",
       },
     },
     config = function(_, opts)
