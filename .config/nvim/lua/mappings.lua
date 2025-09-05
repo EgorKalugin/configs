@@ -41,7 +41,11 @@ end
 map("n", "<Leader>dt", run_tests, { desc = "Run tests" })
 
 -- Telescope
-vim.keymap.set("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Find Symbols" })
+vim.keymap.set("n", "<leader>fs", function()
+  require("telescope.builtin").lsp_document_symbols({
+    sorting_strategy = "ascending",
+  })
+end, { desc = "Find Symbols" })
 vim.keymap.set("n", "<leader>fr", "<cmd>Telescope resume<CR>", { desc = "Resume Last Telescope" })
 vim.keymap.set('n', '<leader>fd', ':Telescope diagnostics bufnr=0<CR>', { noremap = true, silent = true, desc = "Find Diagnostics" })
 vim.keymap.set('n', '<leader>gh', ':Telescope git_bcommits<CR>', { noremap = true, silent = true, desc = "Git file history" })
