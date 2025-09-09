@@ -17,6 +17,57 @@ return {
     },
   },
 
+  -- Mason: manage LSP/DAP/linters/formatters
+  {
+    "williamboman/mason.nvim",
+    build = ":MasonUpdate",
+    config = function()
+      require("mason").setup()
+      -- Ensure Mason bin is on PATH for spawned LSPs
+      local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+      if not string.find(vim.env.PATH or "", mason_bin, 1, true) then
+        vim.env.PATH = mason_bin .. ":" .. (vim.env.PATH or "")
+      end
+    end,
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "pyright",
+          "ruff",
+          "jsonls",
+          "ts_ls",
+          "lua_ls",
+        },
+        automatic_installation = true,
+      })
+    end,
+  },
+  -- Auto install formatters/linters used by conform & tools
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    config = function()
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          -- formatters/linters used by conform & tools
+          "prettier",
+          "jq",
+          "stylua",
+          "isort",
+          "ruff",
+          -- ensure ts language server binary exists even outside lspconfig
+          "typescript-language-server",
+        },
+        auto_update = false,
+        run_on_start = true,
+      })
+    end,
+  },
+
   -- JSON schema catalog for jsonls
   {
     "b0o/schemastore.nvim",

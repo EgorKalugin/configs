@@ -130,9 +130,33 @@ vim.api.nvim_create_autocmd("LspAttach", {
 --   },
 -- }
 
--- configuring single server, example: typescript
--- lspconfig.ts_ls.setup {
---   on_attach = nvlsp.on_attach,
---   on_init = nvlsp.on_init,
---   capabilities = nvlsp.capabilities,
--- }
+-- JavaScript / TypeScript
+do
+  local function ts_on_attach(client, bufnr)
+    nvlsp.on_attach(client, bufnr)
+    -- Delegate formatting to external tools (e.g., prettier via conform)
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  end
+
+  lspconfig.ts_ls.setup {
+    on_attach = ts_on_attach,
+    on_init = nvlsp.on_init,
+    capabilities = nvlsp.capabilities,
+    filetypes = {
+      "javascript", "javascriptreact", "javascript.jsx",
+      "typescript", "typescriptreact", "typescript.tsx",
+    },
+    root_dir = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+    settings = {
+      typescript = {
+        inlayHints = { includeInlayParameterNameHints = "all", includeInlayVariableTypeHints = true, includeInlayFunctionLikeReturnTypeHints = true },
+        preferences = { includeCompletionsForModuleExports = true },
+      },
+      javascript = {
+        inlayHints = { includeInlayParameterNameHints = "all", includeInlayVariableTypeHints = true, includeInlayFunctionLikeReturnTypeHints = true },
+        preferences = { includeCompletionsForModuleExports = true },
+      },
+    },
+  }
+end
