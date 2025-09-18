@@ -45,3 +45,6 @@ vim.wo.number = true
 -- ruler
 vim.opt.colorcolumn = "120"
 
+-- langmap for Russian layout
+vim.opt.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+vim.opt.langmap = "фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
