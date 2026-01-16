@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+!.gitignore
+
+!.config/nvim/
+!.config/nvim/**
+!.config/kitty/
+!.config/kitty/**
+!.config/vial/
+!.config/vial/**
