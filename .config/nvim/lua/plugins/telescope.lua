@@ -3,6 +3,11 @@ return {
   {
     "nvim-telescope/telescope.nvim", -- Specify the Telescope plugin
     opts = {
+      pickers = {
+        git_bcommits = {
+          git_command = { "git", "log", "--follow", "--pretty=format:%h %ad %s", "--date=format:%Y-%m-%d %H:%M" },
+        },
+      },
       defaults = {
         file_ignore_patterns = {
           "%.lock",
