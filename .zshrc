@@ -13,6 +13,12 @@ export ZSH="$HOME/.oh-my-zsh"
 
 # For python path
 export PATH="/usr/local/bin:$PATH"
+# for poetry
+export PATH="/Users/egorkalugin/.local/bin:$PATH"
+# For pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
