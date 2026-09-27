@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     elseif client.name == "ruff" then
       -- Disable hover in favor of pyright
       client.server_capabilities.hoverProvider = false
-    elseif client.name == "tsserver" then
+    elseif client.name == "ts_ls" then
       -- Disable formatting in favor of prettier
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false
@@ -145,7 +145,9 @@ vim.lsp.config["ruff"] = {
 vim.lsp.enable "ruff"
 
 -- TypeScript/JavaScript LSP configuration
-vim.lsp.config["tsserver"] = {
+-- Must be named "ts_ls": that is the nvim-lspconfig/mason name, and
+-- mason-lspconfig auto-enables it. "tsserver" would start a second client.
+vim.lsp.config["ts_ls"] = {
   cmd = { "typescript-language-server", "--stdio" },
   filetypes = {
     "javascript",
@@ -184,4 +186,67 @@ vim.lsp.config["tsserver"] = {
     },
   },
 }
-vim.lsp.enable "tsserver"
+vim.lsp.enable "ts_ls"
+
+-- Go LSP configuration
+vim.lsp.config["gopls"] = {
+  cmd = { "gopls" },
+  filetypes = { "go", "gomod", "gowork", "gotmpl" },
+  root_markers = {
+    "go.work",
+    "go.mod",
+    ".git",
+  },
+  settings = {
+    gopls = {
+      gofumpt = true,
+      usePlaceholders = true,
+      completeUnimported = true,
+      staticcheck = true,
+      analyses = {
+        unusedparams = true,
+        unusedwrite = true,
+        nilness = true,
+        shadow = true,
+      },
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+      codelenses = {
+        generate = true,
+        test = true,
+        tidy = true,
+        upgrade_dependency = true,
+      },
+    },
+  },
+}
+vim.lsp.enable "gopls"
+
+-- Lua LSP configuration (lua_ls is in mason-lspconfig's ensure_installed).
+-- root_markers/settings from nvim-lspconfig's shipped lsp/lua_ls.lua are merged
+-- underneath this table; the workspace library is what teaches it the vim API.
+vim.lsp.config["lua_ls"] = {
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  settings = {
+    Lua = {
+      runtime = { version = "LuaJIT" },
+      workspace = {
+        library = {
+          vim.fn.expand "$VIMRUNTIME/lua",
+          vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types",
+          vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
+          "${3rd}/luv/library",
+        },
+      },
+    },
+  },
+}
+vim.lsp.enable "lua_ls"

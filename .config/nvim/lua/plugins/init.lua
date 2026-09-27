@@ -18,21 +18,20 @@ return {
   },
 
   -- Mason: manage LSP/DAP/linters/formatters
+  -- Deliberately no config/opts: NvChad's own spec supplies mason's opts, and
+  -- nvchad/options.lua already puts mason's bin dir on vim.env.PATH at startup.
   {
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
-    config = function()
-      require("mason").setup()
-      -- Ensure Mason bin is on PATH for spawned LSPs
-      local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
-      if not string.find(vim.env.PATH or "", mason_bin, 1, true) then
-        vim.env.PATH = mason_bin .. ":" .. (vim.env.PATH or "")
-      end
-    end,
   },
   {
     "williamboman/mason-lspconfig.nvim",
-    dependencies = { "williamboman/mason.nvim" },
+    -- VeryLazy fires on UIEnter, the first moment a UI exists; mason-lspconfig
+    -- skips ensure_installed while headless, so nothing earlier would help.
+    event = "VeryLazy",
+    -- v2 requires nvim-lspconfig in rtp before setup(), and automatic_enable must
+    -- see the server configs from configs/lspconfig.lua, so load that plugin first.
+    dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = {
@@ -40,18 +39,24 @@ return {
           "ruff",
           "jsonls",
           "ts_ls",
+          "gopls",
           "lua_ls",
         },
-        automatic_installation = true,
+        -- v2 auto-enables every installed server via vim.lsp.enable(). Mason's
+        -- registry maps the stylua package to a "stylua" LSP, which would attach
+        -- `stylua --lsp` to every lua buffer alongside conform's stylua formatter.
+        automatic_enable = { exclude = { "stylua" } },
       })
     end,
   },
   -- Auto install formatters/linters used by conform & tools
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    event = "VeryLazy",
     dependencies = { "williamboman/mason.nvim" },
     config = function()
-      require("mason-tool-installer").setup({
+      local mti = require "mason-tool-installer"
+      mti.setup({
         ensure_installed = {
           -- formatters/linters used by conform & tools
           "prettier",
@@ -59,12 +64,18 @@ return {
           "stylua",
           "isort",
           "ruff",
+          -- go formatters
+          "gofumpt",
+          "goimports",
           -- ensure ts language server binary exists even outside lspconfig
           "typescript-language-server",
         },
         auto_update = false,
         run_on_start = true,
       })
+      -- run_on_start is wired to a VimEnter autocmd in the plugin's plugin/ dir,
+      -- which never fires when we load after VimEnter, so kick it off ourselves
+      mti.run_on_start()
     end,
   },
 

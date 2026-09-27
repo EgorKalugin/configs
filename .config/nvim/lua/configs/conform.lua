@@ -11,6 +11,8 @@ local options = {
     javascriptreact = { "prettier" }, -- JSX
     typescript = { "prettier" },
     typescriptreact = { "prettier" }, -- TSX
+    go = { "goimports", "gofumpt" },
+    gomod = { "gofumpt" },
   },
 
   format_on_save = nil,

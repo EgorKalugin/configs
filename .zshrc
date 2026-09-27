@@ -124,9 +124,13 @@ export LANG=en_US.UTF-8
 # else
 #   export EDITOR='mvim'
 
+export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
+
+#claude code
+export ENABLE_LSP_TOOLS=1
 
 # Set personal aliases, overriding those provided by Oh My Zsh libs,
 # plugins, and themes. Aliases can be placed here, though Oh My Zsh
